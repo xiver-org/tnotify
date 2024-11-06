@@ -1,0 +1,9 @@
+LICENSE
+README.rst
+pyproject.toml
+setup.py
+tnotify/__init__.py
+tnotify.egg-info/PKG-INFO
+tnotify.egg-info/SOURCES.txt
+tnotify.egg-info/dependency_links.txt
+tnotify.egg-info/top_level.txt

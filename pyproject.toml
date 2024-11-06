@@ -1,0 +1,47 @@
+[tool.poetry]
+name = "tnotify"
+version = "0.0.0"
+description = "The python lib for telegram notifications."
+authors = ["GigantPro <gigantpro2000@gmail.com>"]
+license = "The GPLv3 License (GPLv3)"
+readme = "README.rst"
+
+[tool.poetry.dependencies]
+python = ">=3.9"
+
+[tool.poetry.group.dev.dependencies]
+setuptools = "^75.3.0"
+pytest-asyncio = "^0.24.0"
+pytest = "^8.3.3"
+ruff = "^0.7.2"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+build = "scripts.build:build"
+public = "scripts.public:public"
+testing = "scripts.testing:start_testing"
+clean = "scripts.autoclean:autoclean"
+
+[tool.ruff]
+lint.select = [
+    "F",   # https://beta.ruff.rs/docs/rules/#pyflakes-f
+    "W",   # https://beta.ruff.rs/docs/rules/#warning-w
+    "E",   # https://beta.ruff.rs/docs/rules/#error-e
+    "I",   # https://beta.ruff.rs/docs/rules/#isort-i
+    "N",   # https://beta.ruff.rs/docs/rules/#pep8-naming-n
+    "ANN", # https://beta.ruff.rs/docs/rules/#flake8-annotations-ann
+    "B",   # https://beta.ruff.rs/docs/rules/#flake8-bugbear-b
+    "RUF", # https://beta.ruff.rs/docs/rules/#ruff-specific-rules-ruf
+    "PT",  # https://beta.ruff.rs/docs/rules/#flake8-pytest-style-pt
+]
+include = ["*.py"]
+force-exclude = true
+lint.fixable = ["ALL"]
+
+exclude = [".mypy_cache", ".ruff_cache", ".venv", "__pypackages__", "alembic", "docs"]
+line-length = 120
+
+lint.ignore = []

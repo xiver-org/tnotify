@@ -1,0 +1,22 @@
+name: Linting
+
+on: [push]
+
+jobs:
+  Linting:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4.2.1
+
+    - name: Install Python
+      uses: actions/setup-python@v5.2.0
+      with:
+        python-version: 3.11
+
+    - name: Install ruff
+      run: pip install ruff==0.6.9
+
+    - name: Ruff
+      run: ruff check .

@@ -1,0 +1,26 @@
+Metadata-Version: 2.1
+Name: tnotify
+Version: 0.0.0
+Summary: The python lib for telegram notifications
+Home-page: https://github.com/xiver-org/tnotify
+Download-URL: https://github.com/xiver-org/tnotify/archive/master.zip
+Author: GigantPro
+Author-email: gigantpro2000@gmail.ru
+License: The GPLv3 License (GPLv3)
+Classifier: Operating System :: OS Independent
+Classifier: Intended Audience :: End Users/Desktop
+Classifier: Intended Audience :: Developers
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: Implementation :: PyPy
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
+<p align="center">
+        <h1 align="center">TNotify</h1>
+        <h2 align="center">The python lib for telegram notifications</h2>
+</a>
+
