@@ -2,8 +2,7 @@ saves/
 test.py
 __pycache__
 dist
-frozenclass.egg-info
-*.save
+tnotify.egg-info
 .pytest_cache
 test_saves
 docs/_build
