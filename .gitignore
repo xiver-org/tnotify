@@ -6,4 +6,5 @@ tnotify.egg-info
 .pytest_cache
 test_saves
 docs/_build
+.ruff_cache
 venv
