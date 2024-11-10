@@ -22,7 +22,7 @@ class Bot:
 
         setup_handlers(self.__dp, self.__logger)
 
-    def start_polling(self, event_loop: asyncio.EventLoop) -> None:
+    def start_polling(self, event_loop: asyncio.BaseEventLoop) -> None:
         self.__loop = event_loop
         if self.__polling_process is None:
             self.__polling_process = multiprocessing.Process(
@@ -35,8 +35,8 @@ class Bot:
         pass
 
     def __start_async_start_polling(self) -> None:
-        self.__loop.run_until_complete(self.__async_start_polling())
+        self.__loop.run_until_complete(self.start_polling_async())
 
-    async def __async_start_polling(self) -> None:
+    async def start_polling_async(self) -> None:
         self.__logger.log('INFO', 'Bot starting')
         await self.__dp.start_polling(self.__bot)
