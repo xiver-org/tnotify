@@ -44,7 +44,7 @@ include = ["*.py"]
 force-exclude = true
 lint.fixable = ["ALL"]
 
-exclude = [".mypy_cache", ".ruff_cache", ".venv", "__pypackages__", "alembic", "docs"]
+exclude = [".mypy_cache", ".ruff_cache", ".venv", "__pypackages__", "alembic", "docs", "tests"]
 line-length = 120
 
 lint.ignore = [
