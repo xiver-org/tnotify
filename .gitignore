@@ -9,3 +9,4 @@ test_saves
 docs/_build
 .ruff_cache
 venv
+.tox

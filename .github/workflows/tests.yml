@@ -30,16 +30,11 @@ jobs:
     - name: Pip upgrade
       run: python -m pip install --upgrade pip
 
-    - name: Poetry install
-      run: pip install poetry
-
     - name: Install dependencies
-      run: python -m poetry install --with dev
-
-    - name: Build
-      run: python -m poetry run python setup.py develop
-
-    - name: Run tests
+      run: |
+        python -m pip install --upgrade pip
+        python -m pip install tox
+    - name: Test
       env:
         TG_BOT_TOKEN: ${{ secrets.TG_BOT_TOKEN }}
-      run: cd tests && python -m poetry run python -m pytest
+      run: tox
