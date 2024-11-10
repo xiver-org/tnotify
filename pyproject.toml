@@ -7,7 +7,7 @@ license = "The GPLv3 License (GPLv3)"
 readme = "README.rst"
 
 [tool.poetry.dependencies]
-python = ">=3.9,<3.13"
+python = ">=3.10,<=3.13"
 aiogram = "^3.14.0"
 
 [tool.poetry.group.dev.dependencies]
