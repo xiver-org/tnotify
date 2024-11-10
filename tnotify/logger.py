@@ -1,15 +1,16 @@
 from typing import Any
 
+
 class Logger:
     def __init__(self, logger: Any, log_level: str | None) -> None:
         self.__logger = logger
-        
+
         if logger is False:
             self.log = lambda *arg, **kwargs: ...
-        
+
         elif logger is None:
             self.log = self.__log_with_print
-        
+
             self.__log_levels = {
                 'FATAL': 1,
                 'ERROR': 2,
@@ -22,8 +23,8 @@ class Logger:
 
         else:
             self.log = self.__log_with_logger
-        
-    
+
+
     def __log_with_print(self, type: str, message: str) -> None:
         if self.__check_log_level(type):
             print(f'[{type}]: {message}')

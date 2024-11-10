@@ -46,4 +46,7 @@ lint.fixable = ["ALL"]
 exclude = [".mypy_cache", ".ruff_cache", ".venv", "__pypackages__", "alembic", "docs"]
 line-length = 120
 
-lint.ignore = []
+lint.ignore = [
+    "ANN101",   # Missing type annotation 
+    "ANN401",   # Dynamically typed expressions
+]

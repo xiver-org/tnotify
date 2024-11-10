@@ -1,12 +1,13 @@
+from typing import Any
+
 from aiogram import Dispatcher, html
 from aiogram.filters import CommandStart
 from aiogram.types import Message
 
-
 __all__ = ('setup_handlers',)
 
 
-def setup_handlers(dispatcher: Dispatcher, logger) -> None:
+def setup_handlers(dispatcher: Dispatcher, logger: Any) -> None:
 
     @dispatcher.message(CommandStart())
     async def command_start_handler(message: Message) -> None:

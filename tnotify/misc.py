@@ -1,6 +1,6 @@
 from typing import Callable
 
-from aiogram import Dispatcher, Bot
+from aiogram import Bot, Dispatcher
 
 __all__ = ('misc',)
 
@@ -10,7 +10,7 @@ class Misc:
         self.dispatcher: Dispatcher = dispatcher
         self.bot: Bot = bot
         self.logger: Callable = logger
-        
+
 
 
 misc = Misc()
