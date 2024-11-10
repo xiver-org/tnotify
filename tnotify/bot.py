@@ -5,9 +5,9 @@ import asyncio
 from aiogram import Bot as AIOBot, Dispatcher
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
-from aiogram.types import Message
 
 from .logger import Logger
+from .bot_funcs import setup_handlers
 
 
 loop = asyncio.get_event_loop()
@@ -21,15 +21,15 @@ class Bot:
         
         self.__polling_process = None
         
+        self.__handlers = setup_handlers(self.__dp, self.__logger)
+        
     def start_polling(self) -> None:
         if self.__polling_process is None:
-            print(2)
             self.__polling_process = multiprocessing.Process(
                 target=self.__start_async_start_polling,
                 daemon=True,
             )
             self.__polling_process.start()
-            print(3)
     
     def start_without_polling(self) -> None:
         pass
@@ -39,7 +39,6 @@ class Bot:
         self.__loop.run_until_complete(self.__async_start_polling())
     
     async def __async_start_polling(self) -> None:
-        print(4)
         self.__logger.log('INFO', 'Bot starting')
         await self.__dp.start_polling(self.__bot)
         
