@@ -10,7 +10,6 @@ from aiogram.enums import ParseMode
 from .bot_funcs import setup_handlers
 from .logger import Logger
 
-loop = asyncio.get_event_loop()
 
 class Bot:
     def __init__(self, bot_token: str, logger: Any = None, log_level: str | None = 'INFO') -> None:
@@ -21,9 +20,10 @@ class Bot:
 
         self.__polling_process = None
 
-        self.__handlers = setup_handlers(self.__dp, self.__logger)
+        setup_handlers(self.__dp, self.__logger)
 
-    def start_polling(self) -> None:
+    def start_polling(self, event_loop: asyncio.EventLoop) -> None:
+        self.__loop = event_loop
         if self.__polling_process is None:
             self.__polling_process = multiprocessing.Process(
                 target=self.__start_async_start_polling,
@@ -35,7 +35,6 @@ class Bot:
         pass
 
     def __start_async_start_polling(self) -> None:
-        self.__loop = asyncio.get_event_loop()
         self.__loop.run_until_complete(self.__async_start_polling())
 
     async def __async_start_polling(self) -> None:
