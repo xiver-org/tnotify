@@ -6,7 +6,7 @@
 # # -- Project information -----------------------------------------------------
 # # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
-# project = 'frozenclass'
+# project = 'tnotify'
 # copyright = '2023, GigantPro'
 # author = 'GigantPro'
 # release = '0.0.9'
@@ -60,8 +60,8 @@ sys.path.insert(0, os.path.abspath("_extensions"))
 
 # -- Project information -----------------------------------------------------
 
-project = "frozenclass"
-copyright = "2023, GigantPro"
+project = "tnotify"
+copyright = "2024, GigantPro"
 author = "GigantPro"
 
 # The short X.Y version
@@ -151,7 +151,7 @@ html_static_path = ["_static"]
 # -- Options for HTMLHelp output ---------------------------------------------
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = "frozeenclassdoc"
+htmlhelp_basename = "tnotifydoc"
 
 
 # -- Options for LaTeX output ------------------------------------------------
@@ -174,14 +174,14 @@ latex_elements = {
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
-latex_documents = [(master_doc, "frozenclass.tex", "frozenclass Documentation", "GigantPro", "manual")]
+latex_documents = [(master_doc, "tnotify.tex", "tnotify Documentation", "GigantPro", "manual")]
 
 
 # -- Options for manual page output ------------------------------------------
 
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
-man_pages = [(master_doc, "frozenclass", "frozenclass Documentation", [author], 1)]
+man_pages = [(master_doc, "tnotify", "tnotify Documentation", [author], 1)]
 
 
 # -- Options for Texinfo output ----------------------------------------------
@@ -192,10 +192,10 @@ man_pages = [(master_doc, "frozenclass", "frozenclass Documentation", [author], 
 texinfo_documents = [
     (
         master_doc,
-        "frozenclass",
-        "frozenclass Documentation",
+        "tnotify",
+        "tnotify Documentation",
         author,
-        "Frozenclass",
+        "tnotify",
         "One line description of project.",
         "Miscellaneous",
     )
@@ -204,7 +204,7 @@ texinfo_documents = [
 
 # -- Extension configuration -------------------------------------------------
 
-html_context = {"github_user": "gigantpro", "github_repo": "frozenclass"}
+html_context = {"github_user": "xiver-org", "github_repo": "tnotify"}
 
 add_module_names = False
 autodoc_member_order = "bysource"
@@ -216,5 +216,5 @@ napoleon_use_ivar = True
 
 
 # def setup(app):
-#     app.add_css_file("css/frozenclass.css")
+#     app.add_css_file("css/tnotify.css")
 #     app.add_js_file("js/copybutton.js")

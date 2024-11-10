@@ -31,7 +31,7 @@ def get_module_docstring(filepath): # noqa: ANN201 ANN001
 def setup(app):  # noqa: ANN201 ANN001
     module_name = "autodoc_stub_file.loguru"
     dirname = os.path.dirname(os.path.abspath(__file__))
-    stub_path = os.path.join(dirname, "..", "..", "frozenclass", "__init__.py")
+    stub_path = os.path.join(dirname, "..", "..", "tnotify", "__init__.py")
     docstring = get_module_docstring(stub_path)
     module = types.ModuleType(module_name, docstring)
     sys.modules[module_name] = module
