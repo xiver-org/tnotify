@@ -4,6 +4,7 @@ __pycache__
 dist
 tnotify.egg-info
 .pytest_cache
+.vscode
 test_saves
 docs/_build
 .ruff_cache

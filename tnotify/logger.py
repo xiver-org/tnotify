@@ -4,7 +4,7 @@ class Logger:
     def __init__(self, logger: Any, log_level: str | None) -> None:
         self.__logger = logger
         
-        if self.__log_level is None:
+        if logger is None:
             self.log = self.__log_with_print
         
             self.__log_levels = {
