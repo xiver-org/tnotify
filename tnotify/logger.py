@@ -1,6 +1,8 @@
 from typing import Any
 
 
+__all__ = ('logger',)
+
 class Logger:
     def __init__(self, logger: Any, log_level: str | None) -> None:
         self.__update_cfg(logger, log_level)
@@ -11,7 +13,7 @@ class Logger:
     def __update_cfg(self, logger: Any, log_level: str | None) -> None:
         self.__logger = logger
 
-        if logger is False:
+        if logger is False or log_level is None:
             self.log = lambda *arg, **kwargs: ...
 
         elif logger is None:

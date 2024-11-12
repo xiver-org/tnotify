@@ -7,12 +7,15 @@ from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
 
 from .bot_funcs import setup_handlers
-from .logger import Logger
+from .logger import logger as _logger
 
+
+__all__ = ('Bot',)
 
 class Bot:
     def __init__(self, bot_token: str, logger: Any = None, log_level: str | None = 'INFO') -> None:
-        self.__logger = Logger(logger, log_level)
+        self.__logger = _logger
+        self.__logger.config(logger, log_level)
 
         self.__dp = Dispatcher()
         self.__bot = AIOBot(token=bot_token, default=DefaultBotProperties(parse_mode=ParseMode.HTML))
