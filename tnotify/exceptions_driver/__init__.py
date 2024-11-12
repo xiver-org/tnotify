@@ -1,3 +1,3 @@
-from .exceptions_parser import ExceptionsParser
+from .driver import ExceptionDriver
 
-__all__ = ('ExceptionsParser',)
+__all__ = ('ExceptionDriver',)
