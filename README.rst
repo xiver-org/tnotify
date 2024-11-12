@@ -12,8 +12,8 @@
         <a href="https://pypi.org/project/tnotify/"><img alt="Pypi version" src="https://img.shields.io/pypi/l/tnotify?color=orange"></a>
     </p>
     <p align="center">
-        <a href="https://github.com/xiver-org/tnotify/actions/workflows/tests.yml"><img alt="Testing status" src="https://github.com/xiver-org/tnotify/actions/workflows/tests.yml/badge.svg?branch=main"></a>
-        <a href="https://github.com/xiver-org/tnotify/actions/workflows/linting.yml"><img alt="Linting" src="https://github.com/xiver-org/tnotify/actions/workflows/linting.yml/badge.svg?branch=main"></a>
+        <a href="https://github.com/xiver-org/tnotify/actions/workflows/tests.yml"><img alt="Testing status" src="https://github.com/xiver-org/tnotify/actions/workflows/tests.yml/badge.svg?branch=master"></a>
+        <a href="https://github.com/xiver-org/tnotify/actions/workflows/linting.yml"><img alt="Linting" src="https://github.com/xiver-org/tnotify/actions/workflows/linting.yml/badge.svg?branch=master"></a>
         <a href='https://tnotify.readthedocs.io/en/latest/?badge=latest'><img src='https://readthedocs.org/projects/tnotify/badge/?version=latest' alt='Documentation Status' /></a>
     </p>
 
@@ -43,7 +43,7 @@ Installation
 
 ::
 
-    $ git clone https://github.com/xiver-org/tnotify.git; cd tnotify-main
+    $ git clone https://github.com/xiver-org/tnotify.git; cd tnotify-master
     $ poetry run build; cd dist
     $ pip install $(ls -Art | tail -n 1)
 
