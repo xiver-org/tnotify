@@ -3,6 +3,12 @@ from typing import Any
 
 class Logger:
     def __init__(self, logger: Any, log_level: str | None) -> None:
+        self.__update_cfg(logger, log_level)
+
+    def config(self, logger: Any, log_level: str | None) -> None:
+        self.__update_cfg(logger, log_level)
+
+    def __update_cfg(self, logger: Any, log_level: str | None) -> None:
         self.__logger = logger
 
         if logger is False:
@@ -38,3 +44,6 @@ class Logger:
         if _level <= self.__log_level:
             return True
         return False
+
+
+logger = Logger(None, 'INFO')
