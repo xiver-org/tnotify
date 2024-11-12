@@ -13,7 +13,7 @@ from setuptools import setup
 with open("pyproject.toml", encoding="utf-8") as file:
     VERSION = file.read().split("=")[2].split('"')[1]
 
-with open("tnotify/README.md", encoding="utf-8") as f:
+with open("tnotify/README.rst", encoding="utf-8") as f:
     long_description = f.read()
 
 setup(
@@ -23,7 +23,7 @@ setup(
     author_email="gigantpro2000@gmail.ru",
     description=("The python lib for telegram notifications"),
     long_description=long_description,
-    long_description_content_type="text/markdown",
+    long_description_content_type="text/x-rst",
     url="https://github.com/xiver-org/tnotify",
     download_url="https://github.com/xiver-org/tnotify/archive/master.zip",
     license="The GPLv3 License (GPLv3)",
