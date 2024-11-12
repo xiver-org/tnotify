@@ -1,5 +1,4 @@
 import asyncio
-import multiprocessing
 from typing import Any
 
 from aiogram import Bot as AIOBot
@@ -18,25 +17,19 @@ class Bot:
         self.__dp = Dispatcher()
         self.__bot = AIOBot(token=bot_token, default=DefaultBotProperties(parse_mode=ParseMode.HTML))
 
-        self.__polling_process = None
+        self.__started = False
 
         setup_handlers(self.__dp, self.__logger)
 
-    def start_polling(self, event_loop: asyncio.BaseEventLoop) -> None:
+    def start_polling(self, event_loop: asyncio.AbstractEventLoop) -> None:
         self.__loop = event_loop
         if self.__polling_process is None:
-            self.__polling_process = multiprocessing.Process(
-                target=self.__start_async_start_polling,
-                daemon=True,
-            )
-            self.__polling_process.start()
+            self.__loop.run_until_complete(self.__start_polling())
+            self.__started = True
 
-    def start_without_polling(self) -> None:
-        pass
-
-    def __start_async_start_polling(self) -> None:
-        self.__loop.run_until_complete(self.start_polling_async())
+    async def __start_polling(self) -> None:
+        await self.__dp.start_polling(self.__bot)
 
     async def start_polling_async(self) -> None:
         self.__logger.log('INFO', 'Bot starting')
-        await self.__dp.start_polling(self.__bot)
+        self.__loop.run_until_complete(self.__start_polling())
