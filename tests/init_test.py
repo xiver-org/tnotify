@@ -26,11 +26,15 @@ async def test_start_polling_correct_token():
     
     class TimeoutEx(Exception): pass
     
+    bot = None
+    
     try:
         with timeout(5., exception=TimeoutEx):
-            Bot(token).start_polling()
+            bot = Bot(token)
+            bot.start_polling()
             while True:
                 pass
     except TimeoutEx:
+        bot.stop_polling()
         assert True
     

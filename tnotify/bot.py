@@ -18,9 +18,8 @@ class Bot:
         self.__logger = _logger
         self.__logger.config(logger, log_level)
 
-        self.__loop = asyncio.get_event_loop()
-        self.__loop_thread = Thread(target=self.__start_loop, daemon=False)
-        self.__loop_thread.start()
+        self.__loop = None
+        self.__loop_thread = None
 
         self.__dp = Dispatcher()
         self.__bot = AIOBot(token=bot_token, default=DefaultBotProperties(parse_mode=ParseMode.HTML))
@@ -30,14 +29,31 @@ class Bot:
 
         self.__started = False
 
-        self.bot_task = None
-
     def start_polling(self) -> None:
         if self.__started is False:
+            self.__loop = asyncio.get_event_loop()
+            self.__loop_thread = Thread(target=self.__start_loop, daemon=False)
+            self.__loop_thread.start()
             asyncio.run_coroutine_threadsafe(self.__start_polling(), self.__loop)
 
         else:
             self.__logger.log('ERROR', 'Bot already started! Close befor start')
+    
+    def stop_polling(self) -> None:
+        if self.__started is True:
+            self.__loop.stop()
+            self.__logger.log('TRACE', 'Loop stopped')
+        
+        else:
+            self.__logger.log('ERROR', 'Bot not started!')
+            return
+        
+        self.__started = False
+
+        self.__logger.log('TRACE', 'Bot stopped')
+        self.__loop_thread.join()
+        self.__logger.log('TRACE', 'Loop stopped')
+        self.__logger.log('INFO', 'Bot closed')
 
     async def __start_polling(self) -> None:
         if self.__started is True:
