@@ -8,7 +8,6 @@ from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
 from concurrent.futures import ThreadPoolExecutor
 
-from .bot_funcs import setup_handlers
 from .logger import logger as _logger
 from .handlers import commands_router
 
@@ -31,8 +30,6 @@ class Bot:
         self.__dp.include_router(commands_router)
 
         self.__started = False
-
-        setup_handlers(self.__dp, self.__logger)
     
         self.bot_task = None
 
