@@ -43,7 +43,7 @@ class Bot:
         if self.__started is True:
             self.__loop.stop()
             self.__logger.log('WARNING', 'Bot already started! Closed.')
-            
+
         self.__logger.log('INFO', 'Bot starting')
         self.__started = True
         with ThreadPoolExecutor() as executor:
