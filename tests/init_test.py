@@ -9,16 +9,6 @@ from interruptingcow import timeout
 from tnotify import Bot
 
 
-if sys.version_info < (3, 10):
-    loop = asyncio.get_event_loop()
-else:
-    try:
-        loop = asyncio.get_running_loop()
-    except RuntimeError:
-        loop = asyncio.new_event_loop()
-
-    asyncio.set_event_loop(loop)
-
 @pytest.mark.asyncio
 async def test_init_with_wrong_token():
     with pytest.raises(TokenValidationError):
@@ -38,7 +28,7 @@ async def test_start_polling_correct_token():
     
     try:
         with timeout(5., exception=TimeoutEx):
-            Bot(token).start_polling(loop)
+            Bot(token).start_polling()
             while True:
                 pass
     except TimeoutEx:
