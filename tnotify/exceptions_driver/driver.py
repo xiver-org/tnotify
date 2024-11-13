@@ -1,7 +1,4 @@
-from functools import lru_cache
-
 from .exceptions_parser import ExceptionsParser
-
 
 __all__ = ('ExceptionDriver',)
 
@@ -10,7 +7,11 @@ class ExceptionDriver:
         self.__exceptions_parser = ExceptionsParser()
         self.lru_cache_maxsize = lru_cache_maxsize
 
-    @lru_cache(maxsize=256)
+        self.__cache = {}
+
     def parse(self, exception: BaseException) -> dict:
-        _parsed_ex = self.__exceptions_parser.parse(exception)
-        return _parsed_ex
+        if exception in self.__cache:
+            return self.__cache[exception]
+
+        self.__cache[exception] = self.__exceptions_parser.parse(exception)
+        return self.__cache[exception]

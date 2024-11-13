@@ -15,15 +15,15 @@ class ExceptionsParser:
             "traceback": [],
             "attributes": {}
         }
-        
+
         tb = exception.__traceback__
         while tb is not None:
             frame = tb.tb_frame
             lineno = tb.tb_lineno
             code_context = traceback.extract_tb(tb)[-1]
-            
+
             local_vars = {var: repr(val) for var, val in frame.f_locals.items()}
-            
+
             exception_info["traceback"].append({
                 "filename": frame.f_code.co_filename,
                 "function_name": frame.f_code.co_name,
@@ -32,16 +32,16 @@ class ExceptionsParser:
                 "local_variables": local_vars
             })
             tb = tb.tb_next
-        
+
         for attr_name, attr_value in vars(exception).items():
             exception_info["attributes"][attr_name] = attr_value
-        
+
         if hasattr(exception, "args"):
             exception_info["args"] = exception.args
-        
+
         exception_info["inspection"] = {
             "is_user_defined": inspect.isclass(type(exception)) and type(exception).__module__ != "builtins",
             "module": type(exception).__module__,
         }
-        
+
         return exception_info

@@ -1,12 +1,12 @@
 from typing import Any
 
 from aiogram import html
-from aiogram.types import Message
 from aiogram.filters import CommandStart
+from aiogram.types import Message
 
-from .router import commands_router
 from tnotify.logger import logger
 
+from .router import commands_router
 
 __all__ = ('commands_router',)
 

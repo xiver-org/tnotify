@@ -35,7 +35,7 @@ setup(
     ],
     install_requires=[
         "aiogram==3.14.0",
-        ],
+    ],
     classifiers=[
         "Operating System :: OS Independent",
         "Intended Audience :: End Users/Desktop",
