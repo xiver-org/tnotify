@@ -29,6 +29,9 @@ setup(
     license="The GPLv3 License (GPLv3)",
     packages=[
         'tnotify',
+        'tnotify.bot_funcs',
+        'tnotify.exceptions_driver',
+        'tnotify.handlers',
     ],
     install_requires=[
         "aiogram==3.14.0",
