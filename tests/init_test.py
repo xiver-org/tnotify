@@ -1,5 +1,3 @@
-import asyncio
-import sys
 from aiogram.utils.token import TokenValidationError
 import pytest
 
@@ -12,13 +10,15 @@ from tnotify import Bot
 @pytest.mark.asyncio
 async def test_init_with_wrong_token():
     with pytest.raises(TokenValidationError):
-        Bot("random text")
+        bot = Bot("random text")
+        bot.stop_polling()
     
 @pytest.mark.asyncio
 async def test_init_with_correct_token():
     token = getenv('TG_BOT_TOKEN')
     
-    Bot(token)
+    bot = Bot(token)
+    bot.stop_polling()
 
 @pytest.mark.asyncio
 async def test_start_polling_correct_token():

@@ -38,16 +38,16 @@ class Bot:
 
         else:
             self.__logger.log('ERROR', 'Bot already started! Close befor start')
-    
+
     def stop_polling(self) -> None:
         if self.__started is True:
             self.__loop.stop()
             self.__logger.log('TRACE', 'Loop stopped')
-        
+
         else:
             self.__logger.log('ERROR', 'Bot not started!')
             return
-        
+
         self.__started = False
 
         self.__logger.log('TRACE', 'Bot stopped')
