@@ -1,6 +1,5 @@
 from typing import Any
 
-
 __all__ = ('BotConfig', 'MessageConfig')
 
 __exception_template = """
@@ -38,8 +37,8 @@ class BotConfig:
         bot_token: str,
         logger: Any = None,
         log_level: str | None = 'INFO',
-        
-        message_config: MessageConfig = MessageConfig(),
+
+        message_config: MessageConfig = MessageConfig(),  # noqa: B008
     ) -> None:
         self.bot_token = bot_token
         self.logger = logger

@@ -2,7 +2,6 @@ from aiogram import Bot
 
 from .bot_config import MessageConfig
 
-
 __all__ = ('MessagesModule',)
 
 class MessagesModule:
