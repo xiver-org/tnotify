@@ -2,7 +2,7 @@ from typing import Any
 
 __all__ = ('BotConfig', 'MessageConfig', 'DatabaseConfig',)
 
-__exception_template = """
+exception_template = """
 *!EXCEPTION!*
 
 __{filename}:{function_name}:{line_number}__ *{message}*
@@ -14,7 +14,7 @@ _All info about exception in pinned file_
 `Message by tnotify`
 """
 
-__info_message_template = """
+info_message_template = """
 *Info*
 
 {message}
@@ -28,8 +28,8 @@ Extra info: `{extra_info}`
 class MessageConfig:
     def __init__(
         self,
-        exception_template: str = __exception_template,
-        info_template: str = __info_message_template,
+        exception_template: str = exception_template,
+        info_template: str = info_message_template,
     ) -> None:
         self.exception_template = exception_template
         self.info_template      = info_template
@@ -52,7 +52,7 @@ class BotConfig:
         master_id: int | None = None,
 
         message_config: MessageConfig = MessageConfig(),  # noqa: B008
-        database_config: DatabaseConfig = DatabaseConfig(),  # noqa: B008
+        database_config: DatabaseConfig = DatabaseConfig('tnotify_db.sqlite3'),  # noqa: B008
     ) -> None:
         self.bot_token = bot_token
         self.logger = logger
