@@ -1,11 +1,18 @@
 from typing import Any
 
+__all__ = ('logger',)
 
 class Logger:
     def __init__(self, logger: Any, log_level: str | None) -> None:
+        self.__update_cfg(logger, log_level)
+
+    def config(self, logger: Any, log_level: str | None) -> None:
+        self.__update_cfg(logger, log_level)
+
+    def __update_cfg(self, logger: Any, log_level: str | None) -> None:
         self.__logger = logger
 
-        if logger is False:
+        if logger is False or log_level is None:
             self.log = lambda *arg, **kwargs: ...
 
         elif logger is None:
@@ -38,3 +45,6 @@ class Logger:
         if _level <= self.__log_level:
             return True
         return False
+
+
+logger = Logger(None, 'INFO')

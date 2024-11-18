@@ -10,3 +10,4 @@ docs/_build
 .ruff_cache
 venv
 .tox
+info.json

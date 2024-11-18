@@ -1,46 +1,38 @@
 import asyncio
-import sys
+import time
 from aiogram.utils.token import TokenValidationError
 import pytest
 
+import importlib
 from os import getenv
-from interruptingcow import timeout
+import threading
 
-from tnotify import Bot
-
-
-if sys.version_info < (3, 10):
-    loop = asyncio.get_event_loop()
-else:
-    try:
-        loop = asyncio.get_running_loop()
-    except RuntimeError:
-        loop = asyncio.new_event_loop()
-
-    asyncio.set_event_loop(loop)
+import tnotify
 
 @pytest.mark.asyncio
 async def test_init_with_wrong_token():
     with pytest.raises(TokenValidationError):
-        Bot("random text")
+        bot = tnotify.Bot("random text", log_level='TRACE')
+        bot.stop_polling()
     
-@pytest.mark.asyncio
-async def test_init_with_correct_token():
+def test_init_with_correct_token():
     token = getenv('TG_BOT_TOKEN')
     
-    Bot(token)
+    bot = tnotify.Bot(token, log_level='TRACE')
+    bot.stop_polling()
 
-@pytest.mark.asyncio
-async def test_start_polling_correct_token():
+
+def test_start_polling_correct_token():
     token = getenv('TG_BOT_TOKEN')
+
+    bot = tnotify.Bot(token, log_level='TRACE')
     
-    class TimeoutEx(Exception): pass
-    
-    try:
-        with timeout(5., exception=TimeoutEx):
-            Bot(token).start_polling(loop)
-            while True:
-                pass
-    except TimeoutEx:
-        assert True
+    bot.start_polling()
+    iters = 0
+    while iters < 5:
+        time.sleep(1)
+        iters += 1
+        
+    bot.stop_polling()
+    assert True
     
