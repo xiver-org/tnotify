@@ -1,6 +1,6 @@
+import json
 import sqlite3
 from typing import Any
-import json
 
 from tnotify.bot_config import DatabaseConfig
 
@@ -52,7 +52,7 @@ class DataBase:
 
     def __exit__(self) -> None:
         self.__connection.close()
-    
+
     def __parse_user(self, info: Any) -> User:
         user_id, permissions = info[0], json.loads(info[1])
         return User(user_id, permissions)

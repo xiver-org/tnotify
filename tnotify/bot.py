@@ -1,5 +1,4 @@
 import asyncio
-from concurrent.futures import ThreadPoolExecutor
 from threading import Thread
 from typing import Any
 
@@ -9,8 +8,8 @@ from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
 
 from .bot_config import BotConfig
-from .database import DataBase, DEFAULT_MASTER_PERMISSIONS
-from .handlers import commands_router
+from .database import DEFAULT_MASTER_PERMISSIONS, DataBase
+from .handlers import handlers_router
 from .logger import logger as _logger
 from .messages_module import MessagesModule
 
@@ -38,7 +37,9 @@ class Bot:
                             default=DefaultBotProperties(parse_mode=ParseMode.MARKDOWN_V2))
 
         # Include routers
-        self.__dp.include_router(commands_router)
+        self.__dp.include_router(handlers_router)
+
+        self.__dp.resolve_used_update_types()
 
         self.__started = False
 
@@ -46,24 +47,29 @@ class Bot:
 
     def start_polling(self) -> None:
         if self.__started is False:
-            self.__loop = asyncio.get_event_loop()
-            self.__loop_thread = Thread(target=self.__start_loop, daemon=False)
+            self.__logger.log('INFO', 'Bot starting')
+            self.__started = True
+            self.__loop_thread = Thread(target=self.__dp.run_polling(self.__bot), daemon=False)
             self.__loop_thread.start()
-            asyncio.run_coroutine_threadsafe(self.__start_polling(), self.__loop)
+            self.__logger.log('INFO', 'Bot started')
 
         else:
             self.__logger.log('ERROR', 'Bot already started! Close befor start')
 
     def stop_polling(self) -> None:
         # cleanup routers
-        for __router in self.__dp.sub_routers:
-            __router._parent_router = None
+        def cleanup_sub_routers(router: Any) -> None:
+            if router._parent_router is not None:
+                router._parent_router = None
+
+            for __router in router.sub_routers:
+                cleanup_sub_routers(__router)
+        cleanup_sub_routers(self.__dp)
 
         if self.__started is True:
             asyncio.run_coroutine_threadsafe(self.__dp.stop_polling(), self.__loop)
 
             self.__loop.stop()
-            # self.__dp.stop_polling()
 
             self.__logger.log('TRACE', 'Loop stopped')
 
@@ -73,25 +79,9 @@ class Bot:
 
         self.__started = False
 
-        self.__logger.log('TRACE', 'Bot stopped')
         self.__loop_thread.join()
-        self.__logger.log('TRACE', 'Loop stopped')
         self.__logger.log('INFO', 'Bot closed')
 
-    async def __start_polling(self) -> None:
-        if self.__started is True:
-            self.__loop.stop()
-            self.__logger.log('WARNING', 'Bot already started! Closed.')
-
-        self.__logger.log('INFO', 'Bot starting')
-        self.__started = True
-        with ThreadPoolExecutor() as executor:
-            await self.__loop.run_in_executor(executor, asyncio.run, self.__dp.start_polling(self.__bot))
-
-    def __start_loop(self) -> None:
-        """Start the asyncio loop in a separate thread."""
-        asyncio.set_event_loop(self.__loop)
-        self.__loop.run_forever()
-
     def __exit__(self, *args: Any) -> None:
+        self.__logger.log('TRACE', 'Bot.__exit__ called')
         self.stop_polling()
