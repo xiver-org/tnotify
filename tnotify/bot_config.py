@@ -1,6 +1,6 @@
 from typing import Any
 
-__all__ = ('BotConfig', 'MessageConfig')
+__all__ = ('BotConfig', 'MessageConfig', 'DatabaseConfig',)
 
 __exception_template = """
 *!EXCEPTION!*
@@ -33,6 +33,14 @@ class MessageConfig:
     ) -> None:
         self.exception_template = exception_template
         self.info_template      = info_template
+
+
+class DatabaseConfig:
+    def __init__(
+        self,
+        sqlite_db_path: str,
+    ) -> None:
+        self.sqlite_db_path = sqlite_db_path
 
 
 class BotConfig:

@@ -32,6 +32,7 @@ setup(
         'tnotify.bot_funcs',
         'tnotify.exceptions_driver',
         'tnotify.handlers',
+        'tnotify.database',
     ],
     install_requires=[
         "aiogram==3.14.0",
