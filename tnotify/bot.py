@@ -9,6 +9,7 @@ from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
 
 from .bot_config import BotConfig
+from .database import DataBase
 from .handlers import commands_router
 from .logger import logger as _logger
 from .messages_module import MessagesModule
@@ -18,6 +19,13 @@ __all__ = ('Bot',)
 class Bot:
     def __init__(self, config: BotConfig) -> None:
         self.__config = config
+
+        self.__database = DataBase(self.__config.database_config)
+        self.__database.init_database()
+        if self.__config.master_id:
+            self.__logger.log('TRACE', 'Master getted')
+            self.__database.add_user(self.__config.master_id, self.__config.master_permissions)
+            self.__logger.log('INFO', 'Master added')
 
         self.__logger = _logger
         self.__logger.config(self.__config.logger, self.__config.log_level)

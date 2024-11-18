@@ -49,10 +49,15 @@ class BotConfig:
         bot_token: str,
         logger: Any = None,
         log_level: str | None = 'INFO',
+        master_id: int | None = None,
 
         message_config: MessageConfig = MessageConfig(),  # noqa: B008
+        database_config: DatabaseConfig = DatabaseConfig(),  # noqa: B008
     ) -> None:
         self.bot_token = bot_token
         self.logger = logger
         self.log_level = log_level
+        self.master_id = master_id
+
         self.message_config = message_config
+        self.database_config = database_config
