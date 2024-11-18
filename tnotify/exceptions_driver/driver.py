@@ -1,8 +1,8 @@
 from .exceptions_parser import ExceptionsParser
 
-__all__ = ('ExceptionDriver',)
+__all__ = ('ExceptionsDriver',)
 
-class ExceptionDriver:
+class ExceptionsDriver:
     def __init__(self, lru_cache_maxsize: int = 256):  # noqa: ANN204
         self.__exceptions_parser = ExceptionsParser()
         self.lru_cache_maxsize = lru_cache_maxsize

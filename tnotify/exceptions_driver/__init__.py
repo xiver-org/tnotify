@@ -1,3 +1,3 @@
-from .driver import ExceptionDriver
+from .driver import ExceptionsDriver
 
-__all__ = ('ExceptionDriver',)
+__all__ = ('ExceptionsDriver',)
