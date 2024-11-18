@@ -7,6 +7,8 @@ __exception_template = """
 
 __{filename}:{function_name}:{line_number}__ *{message}*
 
+Extra info: `{extra_info}`
+
 _All info about exception in pinned file_
 
 `Message by tnotify`
@@ -16,6 +18,8 @@ __info_message_template = """
 *Info*
 
 {message}
+
+Extra info: `{extra_info}`
 
 `Message by tnotify`
 """
