@@ -35,4 +35,13 @@ def test_start_polling_correct_token():
         
     bot.stop_polling()
     assert True
+
+
+def test_restart_polling():
+    token = getenv('TG_BOT_TOKEN')
+
+    bot = tnotify.Bot(token, log_level='TRACE')
     
+    bot.start_polling()
+    bot.stop_polling()
+    bot.start_polling()
