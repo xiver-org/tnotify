@@ -10,19 +10,23 @@ from aiogram.enums import ParseMode
 
 from .handlers import commands_router
 from .logger import logger as _logger
+from .bot_config import BotConfig
 
 __all__ = ('Bot',)
 
 class Bot:
-    def __init__(self, bot_token: str, logger: Any = None, log_level: str | None = 'INFO') -> None:
+    def __init__(self, config: BotConfig) -> None:
+        self.__config = config
+        
         self.__logger = _logger
-        self.__logger.config(logger, log_level)
+        self.__logger.config(self.__config.logger, self.__config.log_level)
 
         self.__loop = None
         self.__loop_thread = None
 
         self.__dp = Dispatcher()
-        self.__bot = AIOBot(token=bot_token, default=DefaultBotProperties(parse_mode=ParseMode.HTML))
+        self.__bot = AIOBot(token=self.__config.bot_token,
+                            default=DefaultBotProperties(parse_mode=ParseMode.HTML))
 
         # Include routers
         self.__dp.include_router(commands_router)
