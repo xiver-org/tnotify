@@ -26,7 +26,7 @@ class Bot:
 
         self.__dp = Dispatcher()
         self.__bot = AIOBot(token=self.__config.bot_token,
-                            default=DefaultBotProperties(parse_mode=ParseMode.HTML))
+                            default=DefaultBotProperties(parse_mode=ParseMode.MARKDOWN_V2))
 
         # Include routers
         self.__dp.include_router(commands_router)
