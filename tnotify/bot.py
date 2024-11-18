@@ -11,6 +11,7 @@ from aiogram.enums import ParseMode
 from .handlers import commands_router
 from .logger import logger as _logger
 from .bot_config import BotConfig
+from .messages_module import MessagesModule
 
 __all__ = ('Bot',)
 
@@ -32,6 +33,8 @@ class Bot:
         self.__dp.include_router(commands_router)
 
         self.__started = False
+        
+        self.message = MessagesModule(self.__bot, self.__config.message_config)
 
     def start_polling(self) -> None:
         if self.__started is False:
