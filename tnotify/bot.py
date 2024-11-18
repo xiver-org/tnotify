@@ -45,8 +45,10 @@ class Bot:
             __router._parent_router = None
 
         if self.__started is True:
+            asyncio.run_coroutine_threadsafe(self.__dp.stop_polling(), self.__loop)
+            
             self.__loop.stop()
-            asyncio.run(self.__dp.stop_polling())
+            # self.__dp.stop_polling()
 
             self.__logger.log('TRACE', 'Loop stopped')
 
@@ -75,3 +77,6 @@ class Bot:
         """Start the asyncio loop in a separate thread."""
         asyncio.set_event_loop(self.__loop)
         self.__loop.run_forever()
+    
+    def __exit__(self, *args: Any) -> None:
+        self.stop_polling()
