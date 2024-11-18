@@ -40,8 +40,14 @@ class Bot:
             self.__logger.log('ERROR', 'Bot already started! Close befor start')
 
     def stop_polling(self) -> None:
+        # cleanup routers
+        for __router in self.__dp.sub_routers:
+            __router._parent_router = None
+
         if self.__started is True:
             self.__loop.stop()
+            asyncio.run(self.__dp.stop_polling())
+
             self.__logger.log('TRACE', 'Loop stopped')
 
         else:
