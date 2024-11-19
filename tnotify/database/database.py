@@ -50,6 +50,19 @@ class DataBase:
 
         return self.__parse_user(self.__cursor.fetchone())
 
+    def get_users_with_perm(self, permissions: list[str]) -> list[User]:
+        self.__cursor.execute(
+            f"""
+            SELECT * FROM users
+            WHERE {' OR '.join([f"permissions LIKE '%{i}%'"for i in permissions])}
+            """
+        )
+        users: list[User] = []
+        for unparsed_user in self.__cursor.fetchall():
+            users.append(self.__parse_user(unparsed_user))
+
+        return users
+
     def __exit__(self) -> None:
         self.__connection.close()
 

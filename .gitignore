@@ -12,3 +12,4 @@ venv
 .tox
 info.json
 tnotify_db.sqlite3
+test.json
