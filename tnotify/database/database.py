@@ -50,7 +50,7 @@ class DataBase:
 
         return self.__parse_user(self.__cursor.fetchone())
 
-    def get_users_with_perm(self, permissions: list[str]) -> list[User]:
+    async def get_users_with_perm(self, permissions: list[str]) -> list[User]:
         self.__cursor.execute(
             f"""
             SELECT * FROM users

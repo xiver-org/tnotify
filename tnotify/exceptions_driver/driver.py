@@ -9,9 +9,9 @@ class ExceptionsDriver:
 
         self.__cache = {}
 
-    def parse(self, exception: BaseException) -> dict:
+    async def parse(self, exception: BaseException) -> dict:
         if exception in self.__cache:
             return self.__cache[exception]
 
-        self.__cache[exception] = self.__exceptions_parser.parse(exception)
+        self.__cache[exception] = await self.__exceptions_parser.parse(exception)
         return self.__cache[exception]

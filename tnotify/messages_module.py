@@ -1,4 +1,3 @@
-import asyncio
 from typing import Any
 
 from aiogram import Bot
@@ -24,8 +23,8 @@ class MessagesModule:
 
         self.__exceptions_driver = ExceptionsDriver()
 
-    def exception(self, ex: BaseException, extra_info: str | None = None) -> None:
-        parsed_ex = self.__exceptions_driver.parse(ex)
+    async def exception(self, ex: BaseException, extra_info: str | None = None) -> None:
+        parsed_ex = await self.__exceptions_driver.parse(ex)
         parsed_ex["extra_info"] = extra_info
 
         def parse_dict(d: dict) -> dict:
@@ -45,15 +44,14 @@ class MessagesModule:
 
         for k, v in ready_dict.items():
             try:
-                message = message.format(**{k: v})
+                message = message.format(*{k: v})
             except Exception:
                 pass
 
         # loop = asyncio.get_running_loop()
-        for user in self.__database.get_users_with_perm(['GetNotifyExceptions']):
+        for user in await self.__database.get_users_with_perm(['GetNotifyExceptions']):
             # try:
-            # loop.run_until_complete()
-            asyncio.to_thread(self.__bot.send_message(user.id, message))
+                await self.__bot.send_message(chat_id=user.id, text=message)
             # except Exception as e:
             #     self.__logger.log("ERROR", f"Fail while sending message to {user.id}: {e}")
 

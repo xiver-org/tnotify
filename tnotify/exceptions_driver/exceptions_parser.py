@@ -7,7 +7,7 @@ class ExceptionsParser:
     def __init__(self):  # noqa: ANN204
         pass
 
-    def parse(self, exception: BaseException) -> dict:
+    async def parse(self, exception: BaseException) -> dict:
         exception_info = {
             "type": type(exception).__name__,
             "message": str(exception),
