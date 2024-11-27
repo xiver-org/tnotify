@@ -14,7 +14,7 @@ DEFAULT_ADMIN_PERMISSIONS = [
     *DEFAULT_USER_PERMISSIONS,
 
     'AddUser',
-    'RemoveUser'
+    'RemoveUser',
     'AdminPanel',
 ]
 
