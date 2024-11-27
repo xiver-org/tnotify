@@ -31,7 +31,7 @@ class Bot:
 
         self.__dp = Dispatcher()
         self.__bot = AIOBot(token=self.__config.bot_token,
-                            default=DefaultBotProperties(parse_mode=ParseMode.MARKDOWN_V2))
+                            default=DefaultBotProperties(parse_mode=ParseMode.MARKDOWN))
 
         # Include routers
         self.__dp.include_router(handlers_router)
@@ -39,15 +39,15 @@ class Bot:
         self.__started = False
         self.__dp_task = None
 
-        self.message = MessagesModule(
-            self.__bot, self.__database, self.__logger, self.__config.message_config)
-
         # Loop
         self.__loop = asyncio.new_event_loop()
         asyncio.set_event_loop(self.__loop)
         self.__loop_thread = Thread(target=self.__loop.run_forever, daemon=True)
         self.__loop_thread.start()
         self.__logger.log('TRACE', 'Loop started')
+
+        self.message = MessagesModule(
+            self.__bot, self.__database, self.__logger, self.__loop, self.__config.message_config)
 
     async def start_polling(self) -> None:
         if self.__started is False:
