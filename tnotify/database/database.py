@@ -63,6 +63,17 @@ class DataBase:
 
         return users
 
+    async def get_user_by_id(self, user_id: int) -> User:
+        self.__cursor.execute(
+            """
+            SELECT * FROM users
+            WHERE id = ?
+            """,
+            (user_id,)
+        )
+
+        return self.__parse_user(self.__cursor.fetchone())
+
     def __exit__(self) -> None:
         self.__connection.close()
 
