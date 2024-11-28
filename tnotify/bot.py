@@ -7,6 +7,7 @@ from aiogram import Dispatcher
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
 
+from .admin import admin_panel
 from .bot_config import BotConfig
 from .database import DEFAULT_MASTER_PERMISSIONS, DataBase
 from .handlers import handlers_router
@@ -22,7 +23,7 @@ class Bot:
         self.__logger = _logger
         self.__logger.config(self.__config.logger, self.__config.log_level)
 
-        self.__database = DataBase(self.__logger, self.__config.database_config)
+        self.__database = DataBase(self.__logger, self.__bot, self.__config.database_config)
         self.__database.init_database()
         if self.__config.master_id:
             self.__logger.log('TRACE', 'Master getted')
@@ -48,6 +49,9 @@ class Bot:
 
         self.message = MessagesModule(
             self.__bot, self.__database, self.__logger, self.__loop, self.__config.message_config)
+
+        # Init admin panel
+        admin_panel.setup(self.__dp, self.__bot, self.__logger, self.__database)
 
     async def start_polling(self) -> None:
         if self.__started is False:

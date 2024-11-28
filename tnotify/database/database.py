@@ -2,6 +2,9 @@ import json
 import sqlite3
 from typing import Any
 
+from aiogram import Bot
+from aiogram.types import ChatFullInfo
+
 from tnotify.bot_config import DatabaseConfig
 
 from .types import User
@@ -9,12 +12,13 @@ from .types import User
 __all__ = ('DataBase',)
 
 class DataBase:
-    def __init__(self, logger: Any, db_config: DatabaseConfig) -> None:
+    def __init__(self, logger: Any, bot: Bot, db_config: DatabaseConfig) -> None:
         self.__config = db_config
         self.__logger = logger
+        self.__bot = bot
 
         # Connect to database
-        self.__connection = sqlite3.connect(self.__config.sqlite_db_path)
+        self.__connection = sqlite3.connect(self.__config.sqlite_db_path, check_same_thread=False)
         self.__cursor = self.__connection.cursor()
 
     def init_database(self) -> None:
@@ -50,7 +54,7 @@ class DataBase:
 
         return self.__parse_user(self.__cursor.fetchone())
 
-    async def get_users_with_perm(self, permissions: list[str]) -> list[User]:
+    def get_users_with_perm(self, permissions: list[str]) -> list[User]:
         self.__cursor.execute(
             f"""
             SELECT * FROM users
@@ -63,7 +67,7 @@ class DataBase:
 
         return users
 
-    async def get_user_by_id(self, user_id: int) -> User:
+    def get_user_by_id(self, user_id: int) -> User:
         self.__cursor.execute(
             """
             SELECT * FROM users
@@ -73,6 +77,22 @@ class DataBase:
         )
 
         return self.__parse_user(self.__cursor.fetchone())
+
+    def get_all_users(self) -> list[User]:
+        self.__cursor.execute(
+            """
+            SELECT * FROM users
+            """
+        )
+        users: list[User] = []
+        for unparsed_user in self.__cursor.fetchall():
+            users.append(self.__parse_user(unparsed_user))
+
+        return users
+
+    async def get_all_tg_users(self) -> list[ChatFullInfo]:
+        users = self.get_all_users()
+        return [await self.__bot.get_chat(user.id) for user in users]
 
     def __exit__(self) -> None:
         self.__connection.close()
