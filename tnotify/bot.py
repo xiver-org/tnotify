@@ -23,16 +23,16 @@ class Bot:
         self.__logger = _logger
         self.__logger.config(self.__config.logger, self.__config.log_level)
 
+        self.__dp = Dispatcher()
+        self.__bot = AIOBot(token=self.__config.bot_token,
+                            default=DefaultBotProperties(parse_mode=ParseMode.MARKDOWN))
+
         self.__database = DataBase(self.__logger, self.__bot, self.__config.database_config)
         self.__database.init_database()
         if self.__config.master_id:
             self.__logger.log('TRACE', 'Master getted')
             self.__database.add_user(self.__config.master_id, DEFAULT_MASTER_PERMISSIONS)
             self.__logger.log('INFO', 'Master added')
-
-        self.__dp = Dispatcher()
-        self.__bot = AIOBot(token=self.__config.bot_token,
-                            default=DefaultBotProperties(parse_mode=ParseMode.MARKDOWN))
 
         # Include routers
         self.__dp.include_router(handlers_router)

@@ -31,7 +31,8 @@ class AdminPanel:
 
         self.__inited = True
 
-        self.__dispatcher.callback_query.register(self._callback, lambda x: x.data.endswith('admin_btn'), flags={'self': self})
+        self.__dispatcher.callback_query.register(
+            self._callback, lambda x: x.data.endswith('_btn'), flags={'self': self})
 
     async def __call__(self, message: Message) -> None:
         user = self.__database.get_user_by_id(message.from_user.id)
@@ -73,38 +74,101 @@ class AdminPanel:
         keyboard = InlineKeyboardMarkup(inline_keyboard=btns)
         await message.answer('Admin panel', reply_markup=keyboard, reply_to_message_id=message.message_id)
 
+    async def __admin_panel_render(self, callback_query: CallbackQuery) -> None:
+        self.__logger.log(
+            'TRACE',
+            f'__admin_panel_render by {callback_query.from_user.full_name} ({callback_query.from_user.id})'
+        )
+        await self.admin_panel_render(
+            callback_query.message, self.__database.get_user_by_id(callback_query.from_user.id))
+
     def is_inited(self) -> bool:
         return self.__inited
 
     async def _callback(self, callback_query: CallbackQuery) -> None:
-        code = callback_query.data
-        # if code.isdigit():
-        #     code = int(code)
-        # if code == 2:
-        #     await self.__bot.answer_callback_query(callback_query.id, text='Нажата вторая кнопка')
-        # elif code == 'add_user_btn':
-        #     await self.__bot.answer_callback_query(
-        #         callback_query.id,
-        #         text='Нажата кнопка с номером 5.\nА этот текст может быть длиной до 200 символов 😉', show_alert=True)
-        # else:
-        #     await self.__bot.answer_callback_query(callback_query.id)
-        # await self.__bot.send_message(callback_query.from_user.id, f'Нажата инлайн кнопка! code={code}')
+        if not await self.__check_permission_by_callback(callback_query):
+            await callback_query.answer('You have no access to this command!')
+            return
 
-        await ({
-            'add_user_admin_btn': self.__users_admin_render,
-            'remove_user_admin_btn': self.__users_admin_render
-        }[code])(callback_query)
-
-
-    async def __users_admin_render(self, callback_query: CallbackQuery) -> None:
         code = callback_query.data
 
-        self.__logger.log(
-            'TRACE', f'__users_admin_render by {callback_query.from_user.full_name} ({callback_query.from_user.id})')
+        if code.endswith('_remove_user_id_btn'):
+            await self.__remove_all_user_permissions(callback_query)
+            await callback_query.answer('All user permissions removed!')
+            await self.__admin_panel_render(callback_query)
+            return
+
+        try:
+            await ({
+                'add_user_admin_btn': self.__add_users_admin_render,
+                'remove_user_admin_btn': self.__remove_users_admin_render,
+                'back_to_admin_panel_btn': self.__admin_panel_render,
+            }[code])(callback_query)
+        except KeyError:
+            await self.__bot.send_message(callback_query.from_user.id, 'Unknown command!')
+            self.__logger.log('TRACE', f'Unknown command: {callback_query.data}')
+        await callback_query.answer()
+
+
+    async def __check_permission_by_callback(self, callback_query: CallbackQuery) -> bool:
+        code = callback_query.data
+
+        code_permission = {
+            'change_permission_admin_btn': 'ChangeUserPermissions',
+            'add_user_admin_btn': 'AddUser',
+            'remove_user_admin_btn': 'RemoveUser',
+            'add_admin_admin_btn': 'AddAdmin',
+            'remove_admin_admin_btn': 'RemoveAdmin'
+        }
+
+        if code.endswith('_remove_user_id_btn'):
+            code = 'remove_user_admin_btn'
 
         called_user = self.__database.get_user_by_id(callback_query.from_user.id)
 
-        if called_user and code in called_user.permissions:
-
+        if called_user and code_permission[code] in called_user.permissions:
+            return True
         else:
-            await self.__bot.send_message(callback_query.from_user.id, 'You have no access to this command!')
+            return False
+
+    async def __remove_users_admin_render(self, callback_query: CallbackQuery) -> None:
+        self.__logger.log(
+            'TRACE',
+            f'__remove_users_admin_render by {callback_query.from_user.full_name} ({callback_query.from_user.id})'
+        )
+
+        all_users = await self.__database.get_all_tg_users()
+        msg = '*Users*\n_Choose user to remove_\n\n'
+
+
+        c = 1
+        ln = len(all_users)
+        btns = [list() for _ in range(ln // 4 + 1)]
+        for user in all_users:
+            btns[c // 4] += [InlineKeyboardButton(text=f'{c}', callback_data=f'{user.id}_remove_user_id_btn')]
+
+            msg += f'{c}) {user.first_name} {user.last_name} (@{user.username})\n'
+            c += 1
+
+        btns += [[InlineKeyboardButton(text='< Back', callback_data='back_to_admin_panel_btn')]]
+        keyboard = InlineKeyboardMarkup(inline_keyboard=btns)
+        await self.__bot.send_message(callback_query.from_user.id, msg, reply_markup=keyboard)
+
+    async def __add_users_admin_render(self, callback_query: CallbackQuery) -> None:
+        self.__logger.log(
+            'TRACE',
+            f'__add_users_admin_render by {callback_query.from_user.full_name} ({callback_query.from_user.id})',
+        )
+
+        all_users = await self.__database.get_all_tg_users()
+        msg = '*Users*\n\n'
+
+        c = 1
+        for user in all_users:
+            msg += f'{c}) {user.first_name} {user.last_name} (@{user.username})\n'
+            c += 1
+
+        await self.__bot.send_message(callback_query.from_user.id, msg)
+
+    async def __remove_all_user_permissions(self, callback_query: CallbackQuery) -> None:
+        self.__database.remove_all_permissions(int(callback_query.data.split('_')[0]))

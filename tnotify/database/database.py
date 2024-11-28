@@ -94,6 +94,18 @@ class DataBase:
         users = self.get_all_users()
         return [await self.__bot.get_chat(user.id) for user in users]
 
+    def remove_all_permissions(self, user_id: int) -> None:
+        self.__cursor.execute(
+            """
+            UPDATE users
+            SET permissions = '[]'
+            WHERE id = ?
+            """,
+            (user_id,)
+        )
+        self.__connection.commit()
+        self.__logger.log('TRACE', f'Removed all permissions from user {user_id}')
+
     def __exit__(self) -> None:
         self.__connection.close()
 
