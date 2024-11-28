@@ -33,9 +33,10 @@ setup(
         'tnotify.exceptions_driver',
         'tnotify.handlers',
         'tnotify.database',
+        'tnotify.admin',
     ],
     install_requires=[
-        "aiogram==3.14.0",
+        "aiogram==3.15.0",
     ],
     classifiers=[
         "Operating System :: OS Independent",

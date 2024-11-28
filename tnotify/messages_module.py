@@ -59,7 +59,7 @@ class MessagesModule:
             self.__logger.log("ERROR", f'Internal error: {ex.__repr__()} in Bot.message.exception')
 
         tasks: list[asyncio.Task] = []
-        for user in await self.__database.get_users_with_perm(['GetNotifyExceptions']):
+        for user in self.__database.get_users_with_perm(['GetNotifyExceptions']):
             try:
                 file_data = json.dumps(parsed_ex, indent=4).encode('utf-8') if pin_full_log else None
 

@@ -16,6 +16,7 @@ DEFAULT_ADMIN_PERMISSIONS = [
     'AddUser',
     'RemoveUser',
     'AdminPanel',
+    'ChangeUserPermissions'
 ]
 
 DEFAULT_MASTER_PERMISSIONS = [
